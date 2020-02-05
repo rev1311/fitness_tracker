@@ -44,6 +44,10 @@ app.get("/api/exercises", function(req,res) {
         });
 });
 
+app.post("/api/workouts", function(req, res) {
+    db.workout
+})
+
 
 
 app.listen(PORT, () => {
