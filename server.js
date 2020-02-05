@@ -34,22 +34,22 @@ app.get("/stats", function(req, res) {
 
 app.get("/api/workouts", (req, res) => {
     db.Workout.find({})
-      .populate("exercises")
-      .then(dbWorkout => {
+    .populate("exercises")
+    .then(dbWorkout => {
         res.json(dbWorkout);
     })
-      .catch(err => {
+    .catch(err => {
         res.json(err);
     });
 });
   
 app.post("/api/workouts", (req, res) => {
     db.Workout.create({ day: Date.now() })
-      .then(dbWorkout => {
+    .then(dbWorkout => {
         console.log(dbWorkout);
         res.json(dbWorkout);
     })
-      .catch(({ message }) => {
+    .catch(({ message }) => {
         console.log(message);
         res.json(message);
     });
@@ -61,28 +61,28 @@ app.put("/api/workouts/:workout", (req, res) => {
   
     db.Exercise.create(data).then(dbExercise => {
       console.log(dbExercise);
-      db.Workout.updateOne(
+    db.Workout.updateOne(
         { _id: mongoose.Types.ObjectId(id) },
         { $push: { exercises: dbExercise } }
     )
-        .then(dbWorkout => {
-          res.json(dbWorkout);
-        })
-        .catch(err => {
-          res.json(err);
-        });
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
+    });
     });
 });
   
 app.get("/api/workouts/range", (req, res) => {
     db.Workout.find({})
-      .populate("exercises")
-      .then(dbWorkout => {
-        console.log(dbWorkout);
-        res.json(dbWorkout);
+    .populate("exercises")
+    .then(dbWorkout => {
+      console.log(dbWorkout);
+      res.json(dbWorkout);
     })
-      .catch(err => {
-        res.json(err);
+    .catch(err => {
+      res.json(err);
     });
 });
 
