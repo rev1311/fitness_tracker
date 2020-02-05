@@ -33,6 +33,8 @@ app.get("/stats", function(req, res) {
     res.sendFile(path.join(__dirname, "./public/stats.html"));
 });
 
+
+
 app.get("/api/exercises", function(req,res) {
     db.workout.find({})
         .populate("exercises")
@@ -41,12 +43,50 @@ app.get("/api/exercises", function(req,res) {
         })
         .catch(err => {
         res.json(err);
-        });
+    });
 });
 
-app.post("/api/workouts", function(req, res) {
-    db.workout
-})
+app.post("/api/workouts", (req, res) => {
+    db.workout.create({ day: Date.now() })
+        .then(dbworkout => {
+        console.log(dbworkout);
+        res.json(dbworkout);
+        })
+        .catch(({ message }) => {
+        console.log(message);
+        res.json(message);
+    });
+});
+  
+app.put("/api/workouts/:workout", (req, res) => {
+    let id = req.params.workout;
+    let data = req.body;
+  
+    db.Exercise.create(data).then(dbexercise => {
+        console.log(dbexercise);
+        db.workout.updateOne(
+        { _id: mongoose.Types.ObjectId(id) },
+        { $push: { exercises: dbexercise } })
+        .then(dbworkout => {
+        res.json(dbworkout);
+        })
+        .catch(err => {
+        res.json(err);
+        });
+    });
+});
+  
+  app.get("/api/workouts/range", (req, res) => {
+    db.workout.find({})
+        .populate("exercises")
+        .then(dbworkout => {
+        console.log(dbworkout);
+        res.json(dbworkout);
+        })
+        .catch(err => {
+        res.json(err);
+    });
+});
 
 
 
