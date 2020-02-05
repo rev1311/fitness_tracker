@@ -36,10 +36,10 @@ app.get("/stats", function(req, res) {
 
 
 app.get("/api/exercises", function(req,res) {
-    db.workout.find({})
+    db.Workout.find({})
         .populate("exercises")
-        .then(dbworkout => {
-        res.json(dbworkout);
+        .then(dbWorkout => {
+        res.json(dbWorkout);
         })
         .catch(err => {
         res.json(err);
@@ -47,10 +47,10 @@ app.get("/api/exercises", function(req,res) {
 });
 
 app.post("/api/workouts", (req, res) => {
-    db.workout.create({ day: Date.now() })
-        .then(dbworkout => {
-        console.log(dbworkout);
-        res.json(dbworkout);
+    db.Workout.create({ day: Date.now() })
+        .then(dbWorkout => {
+        console.log(dbWorkout);
+        res.json(dbWorkout);
         })
         .catch(({ message }) => {
         console.log(message);
@@ -59,16 +59,16 @@ app.post("/api/workouts", (req, res) => {
 });
   
 app.put("/api/workouts/:workout", (req, res) => {
-    let id = req.params.workout;
+    let id = req.params.Workout;
     let data = req.body;
   
-    db.Exercise.create(data).then(dbexercise => {
-        console.log(dbexercise);
-        db.workout.updateOne(
+    db.Exercise.create(data).then(dbExercise => {
+        console.log(dbExercise);
+        db.Workout.updateOne(
         { _id: mongoose.Types.ObjectId(id) },
-        { $push: { exercises: dbexercise } })
-        .then(dbworkout => {
-        res.json(dbworkout);
+        { $push: { exercises: dbExercise } })
+        .then(dbWorkout => {
+        res.json(dbWorkout);
         })
         .catch(err => {
         res.json(err);
@@ -77,11 +77,11 @@ app.put("/api/workouts/:workout", (req, res) => {
 });
   
   app.get("/api/workouts/range", (req, res) => {
-    db.workout.find({})
+    db.Workout.find({})
         .populate("exercises")
-        .then(dbworkout => {
-        console.log(dbworkout);
-        res.json(dbworkout);
+        .then(dbWorkout => {
+        console.log(dbWorkout);
+        res.json(dbWorkout);
         })
         .catch(err => {
         res.json(err);
